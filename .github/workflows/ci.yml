@@ -1,0 +1,23 @@
+# Build the sphinx docs, and run pa11y over it, reporting the errors somehow. Might not want to error the ci.
+name: CI
+
+# Controls when the action will run.
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: "actions/setup-python@v2"
+        with:
+          python-version: "3.8"
+      - name: "Install dependencies"
+        run: |
+          pip install -r requirements.txt
+      - name: "Build docs"
+        run: |
+          sphinx-build -W . ./html
