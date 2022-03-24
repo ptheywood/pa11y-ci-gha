@@ -27,9 +27,21 @@ jobs:
       - name: "Build docs"
         run: |
           make html
-      - name: "Run accessibility checker"
+      - name: "Run pa11y-ci"
         run: |
           pa11y-ci --json _build/html/index.html | tee report.json
+      - name: Parse pa11y log producing github annotations
+        run: |
+          echo "::group::Pa11y-ci annotations"
+          # cat report.json | jq ".total"
+          echo "::notice file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
+          echo "::warning file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
+          echo "::error file=app.js,line=1,col=5,endColumn=7::Missing semicolon"
+          echo "::endgroup::"
+
+
+
+        
 
       # - name: Archive report
       #   uses: actions/upload-artifact@v2
