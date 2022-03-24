@@ -1,0 +1,4 @@
+/* Overwrite the basic colour of paragraphs, to set bad contrast to the background */
+p {
+    color: #eee;
+}
