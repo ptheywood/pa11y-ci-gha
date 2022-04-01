@@ -23,14 +23,14 @@ jobs:
           # cache: 'npm'
       - name: "Install pa11y"
         run: npm install -g pa11y-ci
+      - name: Enable Annotations via custom pa11y-ci ProblemMatcher
+        run: echo "::add-matcher::.github/problem-matchers.json"
       - name: "Build docs"
         run: make html -j `nproc`
       - name: "Run pa11y-ci"
-        run: pa11y-ci --json _build/html/index.html | tee report.json
-      - name: Parse pa11y log producing github annotations
-        run: python3 .github/scripts/annotate-pa11yci.py report.json
+        run: pa11y-ci _build/html/index.html 2>&1 | tee report.txt
       # - name: Archive report
       #   uses: actions/upload-artifact@v2
       #   with:
       #     name: pa11y-report
-      #     path: report.json
+      #     path: report.txt
